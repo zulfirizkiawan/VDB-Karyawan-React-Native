@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {DummyProfile} from '../../assets';
-import {AkunTabSection, Gap} from '../../components';
+import {AkunTabSection, Gap, ItemListMenu} from '../../components';
 import {colors, fonts} from '../../utils';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
@@ -28,7 +28,18 @@ const Akun = ({navigation}) => {
       </View>
       <Gap height={20} />
       <View style={styles.tabContainer}>
-        <AkunTabSection />
+        <ItemListMenu
+          text="Edit Profile"
+          onPress={() => navigation.navigate('EditProfile')}
+        />
+        <ItemListMenu
+          text="Pusat Bantuan"
+          // onPress={() => navigation.navigate('PusatBantuan')}
+        />
+        <ItemListMenu
+          text="Keluar Akun"
+          onPress={() => navigation.navigate('Login')}
+        />
       </View>
     </View>
   );
@@ -55,7 +66,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabContainer: {
-    flex: 1,
+    // flex: 1,
+    backgroundColor: colors.white,
+    paddingVertical: 10,
   },
   TxtEdit: {
     fontSize: 14,
@@ -66,8 +79,6 @@ const styles = StyleSheet.create({
   wrapProfile: {
     alignItems: 'center',
     paddingBottom: 30,
-    // borderBottomLeftRadius: 25,
-    // borderBottomRightRadius: 25,
   },
   shadow: {
     backgroundColor: 'white',

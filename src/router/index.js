@@ -10,6 +10,9 @@ import {
   EditProfile,
   Login,
   Pesanan,
+  PesananGrooming,
+  PesananPenitipan,
+  PesananPraktik,
   PusatBantuan,
   Splash,
 } from '../pages';
@@ -83,6 +86,21 @@ const Router = () => {
       <Stack.Screen
         name="Diskon"
         component={Diskon}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PesananGrooming"
+        component={PesananGrooming}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PesananPenitipan"
+        component={PesananPenitipan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PesananPraktik"
+        component={PesananPraktik}
         options={{headerShown: false}}
       />
       <Stack.Screen

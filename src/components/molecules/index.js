@@ -12,6 +12,9 @@ import AkunTabSection from './AkunTabSection';
 import PesananTabSection from './PesananTabSection';
 import ItemValue from './ItemValue';
 import TotalPesananBeranda from './TotalPesananBeranda';
+import PesananGroomingTabSection from './PesananGroomingTabSection';
+import PesananPenitipanTabSection from './PesananPenitipanTabSection';
+import PesananPraktikTabSection from './PesananPraktikTabSection';
 
 export {
   Header,
@@ -28,4 +31,7 @@ export {
   PesananTabSection,
   ItemValue,
   TotalPesananBeranda,
+  PesananGroomingTabSection,
+  PesananPenitipanTabSection,
+  PesananPraktikTabSection,
 };

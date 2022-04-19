@@ -9,6 +9,9 @@ import DetailPesananGrooming from './DetailPesananGrooming';
 import DetailPesananPenitipan from './DetailPesananPenitipan';
 import DetailPesananPraktik from './DetailPesananPraktik';
 import Diskon from './Diskon';
+import PesananGrooming from './PesananGrooming';
+import PesananPenitipan from './PesananPenitipan';
+import PesananPraktik from './PesananPraktik';
 
 export {
   Splash,
@@ -22,4 +25,7 @@ export {
   DetailPesananPenitipan,
   DetailPesananPraktik,
   Diskon,
+  PesananGrooming,
+  PesananPenitipan,
+  PesananPraktik,
 };

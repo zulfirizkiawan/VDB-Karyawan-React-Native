@@ -1,14 +1,30 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {colors, fonts} from '../../utils';
-import {PesananTabSection} from '../../components';
+import {Layanan, PesananTabSection} from '../../components';
 
-const Pesanan = () => {
+const Pesanan = ({navigation}) => {
   return (
     <View style={styles.page}>
       <Text style={styles.judulPage}>Pesanan</Text>
-      <View style={styles.tabContainer}>
+      {/* <View style={styles.tabContainer}>
         <PesananTabSection />
+      </View> */}
+      {/* Layanan */}
+
+      <View style={styles.wrapRiwayat}>
+        <Layanan
+          category="Grooming"
+          onPress={() => navigation.navigate('PesananGrooming')}
+        />
+        <Layanan
+          category="Penitipan"
+          onPress={() => navigation.navigate('PesananPenitipan')}
+        />
+        <Layanan
+          category="Praktik"
+          onPress={() => navigation.navigate('PesananPraktik')}
+        />
       </View>
     </View>
   );
@@ -28,5 +44,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  tabContainer: {flex: 1, marginTop: 10},
+  wrapRiwayat: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    marginTop: 15,
+  },
 });

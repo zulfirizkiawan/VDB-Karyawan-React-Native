@@ -77,7 +77,7 @@ const AkunTabSection = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: '1', title: 'Akun'},
-    {key: '2', title: 'Riwayat Pesanan'},
+    {key: '2', title: 'VDB Pet Care'},
   ]);
 
   const renderScene = SceneMap({
