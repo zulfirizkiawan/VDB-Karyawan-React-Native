@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 120,
-    // width: 335,
+    width: 370,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[500],
     width: 220,
     paddingLeft: 5,
+    textAlign: 'justify',
   },
   wrapIcon: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -7,18 +7,28 @@ import {
   Text,
   View,
 } from 'react-native';
-import {DummyProfile} from '../../assets';
-import {
-  Gap,
-  Layanan,
-  ListDokter,
-  MerawatHewan,
-  Slider,
-  TotalPesananBeranda,
-} from '../../components';
-import {colors, fonts} from '../../utils';
+import {useDispatch, useSelector} from 'react-redux';
+import {Gap, Layanan, Slider, TotalPesananBeranda} from '../../components';
+import {getDiskonData} from '../../redux/action/home';
+import {colors, fonts, getData} from '../../utils';
 
 const Dashboard = ({navigation}) => {
+  const [userProfile, setUserProfile] = useState({});
+
+  useEffect(() => {
+    getData('userProfile').then(res => {
+      console.log('token :', res);
+      setUserProfile(res);
+    });
+  }, []);
+
+  const dispatch = useDispatch();
+  const {diskon} = useSelector(state => state.homeReducer);
+
+  useEffect(() => {
+    dispatch(getDiskonData());
+  }, []);
+
   return (
     <View style={styles.page}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
@@ -28,10 +38,30 @@ const Dashboard = ({navigation}) => {
         <View style={styles.wrapProfil}>
           <View>
             <Text style={styles.hallo}>Hallo, Apa kabar ?</Text>
-            <Text style={styles.namaUser}>Zulfi Rizkiawan</Text>
+            <Text style={styles.namaUser}>{userProfile.name}</Text>
           </View>
-          <Image source={DummyProfile} style={styles.avatar} />
+          <Image
+            source={{uri: userProfile.profile_photo_url}}
+            style={styles.avatar}
+          />
         </View>
+        <Gap height={20} />
+        <View style={styles.wrapContent}>
+          <Text style={styles.Lbl}>Diskon Saat ini</Text>
+          <View style={styles.garis} />
+        </View>
+        {diskon.turn_off === 'yes' ? (
+          <View />
+        ) : (
+          <View style={styles.wrapSlider}>
+            <Slider
+              key={diskon.id}
+              category="Kucing"
+              deskripsi={diskon.description}
+              diskon={diskon.price_discount}
+            />
+          </View>
+        )}
         <Gap height={20} />
         {/* Total Pesanan */}
         <View style={styles.wrapContent}>
@@ -78,15 +108,6 @@ const Dashboard = ({navigation}) => {
         </View>
         <Gap height={20} />
         {/* Tambahkan Diskon */}
-        <View style={styles.wrapContent}>
-          <Text style={styles.Lbl}>Tambahkan Diskon</Text>
-          <View style={styles.wrapRiwayat}>
-            <Layanan
-              category="Diskon"
-              onPress={() => navigation.navigate('Diskon')}
-            />
-          </View>
-        </View>
       </ScrollView>
     </View>
   );
@@ -144,5 +165,13 @@ const styles = StyleSheet.create({
   },
   totalPesanan: {
     flexDirection: 'row',
+  },
+  wrapSlider: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  garis: {
+    borderBottomColor: '#BDBDBD',
+    borderBottomWidth: 0.7,
   },
 });

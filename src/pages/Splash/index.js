@@ -1,14 +1,20 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, StatusBar, Text} from 'react-native';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {ILjejakKanan, ILjejakKiri} from '../../assets';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('Login');
-    }, 3000);
+      getData('token').then(res => {
+        if (res) {
+          navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
+        } else {
+          navigation.replace('Login');
+        }
+      });
+    }, 2000);
   }, []);
 
   return (

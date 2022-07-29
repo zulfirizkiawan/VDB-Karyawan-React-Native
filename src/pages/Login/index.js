@@ -1,11 +1,31 @@
 import React from 'react';
+import {useEffect} from 'react';
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch} from 'react-redux';
 import {ILLogin} from '../../assets';
-import {Buttons, Gap, Input, Link} from '../../components';
-import {colors, fonts} from '../../utils';
+import {Buttons, Gap, Input} from '../../components';
+import {signInAction} from '../../redux/action/auth';
+import {colors, fonts, getData, useForm} from '../../utils';
 
 const Login = ({navigation}) => {
+  const [form, setFrom] = useForm({
+    email: '',
+    password: '',
+  });
+
+  useEffect(() => {
+    getData('token').then(res => {
+      console.log('token :', res);
+    });
+  }, []);
+
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(signInAction(form, navigation));
+  };
+
   return (
     <View style={styles.page}>
       <StatusBar barStyle="light-content" backgroundColor="#4596EA" />
@@ -19,15 +39,21 @@ const Login = ({navigation}) => {
           <View style={styles.wrapContent}>
             <Text style={styles.register}>Login</Text>
             <Gap height={20} />
-            <Input judul="Email" />
+            <Input
+              judul="Email"
+              value={form.email}
+              onChangeText={value => setFrom('email', value)}
+            />
             <Gap height={15} />
-            <Input judul="Kata sandi" />
+            <Input
+              judul="Kata sandi"
+              value={form.password}
+              onChangeText={value => setFrom('password', value)}
+              secureTextEntry
+            />
             <Text style={styles.lupa}>Lupa Kata sandi?</Text>
             <Gap height={25} />
-            <Buttons
-              title="Login"
-              onPress={() => navigation.replace('MainApp')}
-            />
+            <Buttons title="Login" onPress={onSubmit} />
             <Gap height={20} />
           </View>
           <Gap height={15} />

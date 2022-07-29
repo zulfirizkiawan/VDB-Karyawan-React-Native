@@ -8,6 +8,7 @@ import {
   DetailPesananPraktik,
   Diskon,
   EditProfile,
+  LihatProfile,
   Login,
   Pesanan,
   PesananGrooming,
@@ -101,6 +102,11 @@ const Router = () => {
       <Stack.Screen
         name="PesananPraktik"
         component={PesananPraktik}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="LihatProfile"
+        component={LihatProfile}
         options={{headerShown: false}}
       />
       <Stack.Screen

@@ -15,6 +15,8 @@ import TotalPesananBeranda from './TotalPesananBeranda';
 import PesananGroomingTabSection from './PesananGroomingTabSection';
 import PesananPenitipanTabSection from './PesananPenitipanTabSection';
 import PesananPraktikTabSection from './PesananPraktikTabSection';
+import Number from './Number';
+import Loading from './Loading';
 
 export {
   Header,
@@ -34,4 +36,6 @@ export {
   PesananGroomingTabSection,
   PesananPenitipanTabSection,
   PesananPraktikTabSection,
+  Number,
+  Loading,
 };

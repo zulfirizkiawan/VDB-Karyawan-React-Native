@@ -1,19 +1,36 @@
-import React from 'react';
-import {
-  ScrollView,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  useWindowDimensions,
-} from 'react-native';
-import {DummyProfile} from '../../assets';
-import {AkunTabSection, Gap, ItemListMenu} from '../../components';
-import {colors, fonts} from '../../utils';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import React, {useState, useEffect} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {Gap, ItemListMenu} from '../../components';
+import {colors, fonts, getData} from '../../utils';
+import Dialog from 'react-native-dialog';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Akun = ({navigation}) => {
+  const [visible, setVisible] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+
+  useEffect(() => {
+    getData('userProfile').then(res => {
+      console.log('token :', res);
+      setUserProfile(res);
+    });
+  }, []);
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  const signOut = () => {
+    AsyncStorage.multiRemove(['userProfile', 'token']).then(() => {
+      navigation.reset({index: 0, routes: [{name: 'Login'}]});
+    });
+    setVisible(false);
+  };
+
   return (
     <View style={styles.page}>
       <View style={styles.shadow}>
@@ -21,25 +38,31 @@ const Akun = ({navigation}) => {
           <Text style={styles.TxtHeader}>Akun</Text>
         </View>
         <View style={styles.wrapProfile}>
-          <Image source={DummyProfile} style={styles.avatar} />
+          <Image
+            source={{uri: userProfile.profile_photo_url}}
+            style={styles.avatar}
+          />
           <Gap height={24} />
-          <Text style={styles.nama}>Zulfi Rizkiawan</Text>
+          <Text style={styles.nama}>{userProfile.name}</Text>
         </View>
       </View>
       <Gap height={20} />
       <View style={styles.tabContainer}>
         <ItemListMenu
           text="Edit Profile"
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() => navigation.navigate('LihatProfile')}
         />
         <ItemListMenu
           text="Pusat Bantuan"
-          // onPress={() => navigation.navigate('PusatBantuan')}
+          onPress={() => navigation.navigate('PusatBantuan')}
         />
-        <ItemListMenu
-          text="Keluar Akun"
-          onPress={() => navigation.navigate('Login')}
-        />
+        <ItemListMenu text="Keluar Akun" onPress={showDialog} />
+        <Dialog.Container visible={visible}>
+          <Dialog.Title>Keluar dari aplikasi</Dialog.Title>
+          <Dialog.Description>Apakah Anda Ingin Keluar?</Dialog.Description>
+          <Dialog.Button label="Tidak" onPress={handleCancel} color="#4552CB" />
+          <Dialog.Button label="Iya" onPress={signOut} color="#4552CB" />
+        </Dialog.Container>
       </View>
     </View>
   );

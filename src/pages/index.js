@@ -12,6 +12,7 @@ import Diskon from './Diskon';
 import PesananGrooming from './PesananGrooming';
 import PesananPenitipan from './PesananPenitipan';
 import PesananPraktik from './PesananPraktik';
+import LihatProfile from './LihatProfile';
 
 export {
   Splash,
@@ -28,4 +29,5 @@ export {
   PesananGrooming,
   PesananPenitipan,
   PesananPraktik,
+  LihatProfile,
 };
