@@ -4,7 +4,10 @@ import {DummyProfile} from '../../assets';
 import {Gap, Header, Input, ItemValue, Status} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const DetailPesananPenitipan = ({navigation}) => {
+const DetailPesananPenitipan = ({navigation, route}) => {
+  const itemPenitipan = route.params;
+  const formatedDate = new Date(itemPenitipan.created_at * 1000).toDateString();
+
   return (
     <View style={styles.Page}>
       <Header title="Detail Pesanan" onPress={() => navigation.goBack()} />
@@ -14,55 +17,77 @@ const DetailPesananPenitipan = ({navigation}) => {
           <Gap height={20} />
           <ItemValue
             label="Status"
-            value="PENJEMPUTAN"
-            valueColor={'Paid' === 'CANCELLED' ? '#D9435E' : '#F1A852'}
+            value={itemPenitipan.status}
+            valueColor={
+              itemPenitipan.status === 'DIBATALKAN'
+                ? '#D9435E'
+                : itemPenitipan.status === 'SELESAI'
+                ? '#1ABC9C'
+                : '#F1A852'
+            }
           />
-          <ItemValue label="Tanggal Pemesanan " value="18 Okt 2021" />
+          <ItemValue label="Tanggal Pemesanan " value={formatedDate} />
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>informasi Hewan</Text>
-          <ItemValue label="Nama Hewan " value="Bisqi" />
-          <ItemValue label="Jenis Hewan " value="Kucing" />
-          <ItemValue label="Keturunan" value="Persia" />
-          <ItemValue label="Jenis kelamin" value="Betina" />
+          <ItemValue label="Nama Hewan " value={itemPenitipan.animal_name} />
+          <ItemValue label="Jenis Hewan " value={itemPenitipan.animal_type} />
+          <ItemValue label="Keturunan" value={itemPenitipan.descendants} />
           <ItemValue
-            label="Tgl Pemesanan"
-            value="06-09-2021"
+            label="Jenis kelamin"
+            value={itemPenitipan.animal_gender}
+          />
+          <ItemValue
+            label="Tgl Penitipan"
+            value={formatedDate}
             valueColor="#4552CB"
           />
           <ItemValue
             label="Tgl Peengembalian"
-            value="08-09-2021"
+            value={itemPenitipan.tanggal_pengembalian}
             valueColor="#4552CB"
           />
           <Gap height={8} />
           <View>
             <Text style={styles.txt}>Catatan :</Text>
             <Gap height={3} />
-            <Text style={styles.txtHasil}>
-              Hati hati ya kak, kucingnya galak
-            </Text>
+            <Text style={styles.txtHasil}>{itemPenitipan.note}</Text>
           </View>
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>Pesanan Dari :</Text>
-          <ItemValue label="Nama " value="Rizkiawan" />
-          <ItemValue label="No. Hp" value="08586756282" />
+          <ItemValue label="Nama " value={itemPenitipan.user.name} />
+          <ItemValue label="No. Hp" value={itemPenitipan.user.phoneNumber} />
           <Gap height={8} />
           <View>
             <Text style={styles.txt}>Alamat :</Text>
             <Gap height={3} />
-            <Text style={styles.txtHasil}>
-              Purboyo, Purwosekar, Tajinan, Malang
-            </Text>
+            <Text style={styles.txtHasil}>{itemPenitipan.user.address}</Text>
           </View>
         </View>
 
         <View style={styles.content}>
-          <ItemValue label="Subtotal " value="Rp. 50.000" />
-          <ItemValue label="Ongkos Antar Jemput" value="10.000" />
-          <ItemValue label="Diskon " value="- 5.000" />
-          <ItemValue label="Total " value="Rp. 50.000" valueColor="#27AE60" />
+          <ItemValue
+            label="Subtotal "
+            numberRp
+            value={itemPenitipan.sub_total}
+          />
+          <ItemValue
+            label="Ongkos Antar Jemput"
+            numberRp
+            value={itemPenitipan.shipping_cost}
+          />
+          <ItemValue
+            label="Diskon "
+            numberRp
+            value={'- ' + itemPenitipan.discount}
+          />
+          <ItemValue
+            label="Total "
+            numberRp
+            value={itemPenitipan.total}
+            valueColor="#27AE60"
+          />
         </View>
 
         <Gap height={20} />
@@ -95,7 +120,7 @@ const styles = StyleSheet.create({
     color: colors.text.for,
   },
   txtHasil: {
-    fontFamily: fonts.primary[400],
+    fontFamily: fonts.primary[500],
     fontSize: 14,
     color: colors.text.primary,
   },

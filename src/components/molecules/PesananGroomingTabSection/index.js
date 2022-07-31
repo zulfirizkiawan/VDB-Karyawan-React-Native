@@ -4,13 +4,25 @@ import {
   View,
   useWindowDimensions,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {colors, fonts} from '../../../utils';
+import {colors, fonts, showMessage} from '../../../utils';
 import {useNavigation} from '@react-navigation/native';
 import CardPesanan from '../CardPesanan';
 import {Gap} from '../../atoms';
+import {
+  getAntarGrooming,
+  getBatalGrooming,
+  getPendingGrooming,
+  getPenjemputanGrooming,
+  getProsesGrooming,
+  getSelesaiGrooming,
+} from '../../../redux/action/pesanan';
+import {useDispatch, useSelector} from 'react-redux';
+import Axios from 'axios';
+import {setLoading} from '../../../redux/action/global';
 
 const renderTabBar = props => (
   <TabBar
@@ -42,17 +54,98 @@ const renderTabBar = props => (
   />
 );
 
+const API_HOST = {
+  url: 'http://vdb.otwlulus.com/api',
+};
+
 const Konfirmasi = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {pendingGrooming} = useSelector(state => state.pesananReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    dispatch(getPendingGrooming());
+    // console.log('grooming :', pendingGrooming);
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getPendingGrooming());
+    setRefreshing(false);
+  };
+
+  const cancelGrooming = () => {
+    {
+      pendingGrooming.map(itemGrooming => {
+        const data = {
+          status: 'DIBATALKAN',
+        };
+        dispatch(setLoading(true));
+        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
+          .then(res => {
+            dispatch(setLoading(false));
+            showMessage('Sukses memperbarui status', 'success');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'MainApp'}],
+            });
+          })
+          .catch(err => {
+            dispatch(setLoading(false));
+            console.log('error cancel :', err);
+          });
+      });
+    }
+  };
+
+  const nextGrooming = () => {
+    {
+      pendingGrooming.map(itemGrooming => {
+        const data = {
+          status: 'PENJEMPUTAN',
+        };
+        dispatch(setLoading(true));
+        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
+          .then(res => {
+            dispatch(setLoading(false));
+            showMessage('Sukses memperbarui status', 'success');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'MainApp'}],
+            });
+          })
+          .catch(err => {
+            dispatch(setLoading(false));
+            console.log('sukses cancel :', err);
+          });
+      });
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananGrooming')}
-        />
-        <CardPesanan />
-        <CardPesanan />
-        <CardPesanan />
+        {pendingGrooming.map(itemGrooming => {
+          return (
+            <CardPesanan
+              onPress={() =>
+                navigation.navigate('DetailPesananGrooming', itemGrooming)
+              }
+              key={itemGrooming.id}
+              nama={itemGrooming.user.name}
+              jenisHewan={itemGrooming.animal_type}
+              total={itemGrooming.total}
+              status={itemGrooming.status}
+              onCancel={cancelGrooming}
+              onNext={nextGrooming}
+              textBtn="Terima"
+            />
+          );
+        })}
       </View>
       <Gap height={20} />
     </ScrollView>
@@ -61,32 +154,66 @@ const Konfirmasi = () => {
 
 const Penjemputan = () => {
   const navigation = useNavigation();
-  return (
-    <ScrollView>
-      <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananPenitipan')}
-        />
-        <CardPesanan />
-        <CardPesanan />
-        <CardPesanan />
-      </View>
-      <Gap height={20} />
-    </ScrollView>
-  );
-};
+  const dispatch = useDispatch();
+  const {penjemputanGrooming} = useSelector(state => state.pesananReducer);
+  const [refreshing, setRefreshing] = useState(false);
 
-const Pengambilan = () => {
-  const navigation = useNavigation();
+  useEffect(() => {
+    dispatch(getPenjemputanGrooming());
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getPenjemputanGrooming());
+    setRefreshing(false);
+  };
+
+  const nextGrooming = () => {
+    {
+      penjemputanGrooming.map(itemGrooming => {
+        const data = {
+          status: 'DI PROSES',
+        };
+        dispatch(setLoading(true));
+        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
+          .then(res => {
+            dispatch(setLoading(false));
+            showMessage('Sukses memperbarui status', 'success');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'MainApp'}],
+            });
+          })
+          .catch(err => {
+            dispatch(setLoading(false));
+            console.log('sukses cancel :', err);
+          });
+      });
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananPraktik')}
-        />
-        <CardPesanan />
-        <CardPesanan />
-        <CardPesanan />
+        {penjemputanGrooming.map(itemGrooming => {
+          return (
+            <CardPesanan
+              onPress={() =>
+                navigation.navigate('DetailPesananGrooming', itemGrooming)
+              }
+              key={itemGrooming.id}
+              nama={itemGrooming.user.name}
+              jenisHewan={itemGrooming.animal_type}
+              total={itemGrooming.total}
+              status={itemGrooming.status}
+              onNext={nextGrooming}
+              textBtn="Proses"
+            />
+          );
+        })}
       </View>
       <Gap height={20} />
     </ScrollView>
@@ -95,15 +222,66 @@ const Pengambilan = () => {
 
 const Proses = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {prosesGrooming} = useSelector(state => state.pesananReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    dispatch(getProsesGrooming());
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getProsesGrooming());
+    setRefreshing(false);
+  };
+
+  const nextGrooming = () => {
+    {
+      prosesGrooming.map(itemGrooming => {
+        const data = {
+          status: 'DI ANTAR',
+        };
+        dispatch(setLoading(true));
+        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
+          .then(res => {
+            dispatch(setLoading(false));
+            showMessage('Sukses memperbarui status', 'success');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'MainApp'}],
+            });
+          })
+          .catch(err => {
+            dispatch(setLoading(false));
+            console.log('sukses cancel :', err);
+          });
+      });
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananPraktik')}
-        />
-        <CardPesanan />
-        <CardPesanan />
-        <CardPesanan />
+        {prosesGrooming.map(itemGrooming => {
+          return (
+            <CardPesanan
+              onPress={() =>
+                navigation.navigate('DetailPesananGrooming', itemGrooming)
+              }
+              key={itemGrooming.id}
+              nama={itemGrooming.user.name}
+              jenisHewan={itemGrooming.animal_type}
+              total={itemGrooming.total}
+              status={itemGrooming.status}
+              onNext={nextGrooming}
+              textBtn="Antar"
+            />
+          );
+        })}
       </View>
       <Gap height={20} />
     </ScrollView>
@@ -112,15 +290,66 @@ const Proses = () => {
 
 const Antar = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {antarGrooming} = useSelector(state => state.pesananReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    dispatch(getAntarGrooming());
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getAntarGrooming());
+    setRefreshing(false);
+  };
+
+  const nextGrooming = () => {
+    {
+      antarGrooming.map(itemGrooming => {
+        const data = {
+          status: 'SELESAI',
+        };
+        dispatch(setLoading(true));
+        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
+          .then(res => {
+            dispatch(setLoading(false));
+            showMessage('Sukses memperbarui status', 'success');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'MainApp'}],
+            });
+          })
+          .catch(err => {
+            dispatch(setLoading(false));
+            console.log('sukses cancel :', err);
+          });
+      });
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananPraktik')}
-        />
-        <CardPesanan />
-        <CardPesanan />
-        <CardPesanan />
+        {antarGrooming.map(itemGrooming => {
+          return (
+            <CardPesanan
+              onPress={() =>
+                navigation.navigate('DetailPesananGrooming', itemGrooming)
+              }
+              key={itemGrooming.id}
+              nama={itemGrooming.user.name}
+              jenisHewan={itemGrooming.animal_type}
+              total={itemGrooming.total}
+              status={itemGrooming.status}
+              onNext={nextGrooming}
+              textBtn="Selesai"
+            />
+          );
+        })}
       </View>
       <Gap height={20} />
     </ScrollView>
@@ -129,13 +358,39 @@ const Antar = () => {
 
 const Selesai = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {selesaiGrooming} = useSelector(state => state.pesananReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    dispatch(getSelesaiGrooming());
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getSelesaiGrooming());
+    setRefreshing(false);
+  };
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananPraktik')}
-        />
-        <CardPesanan />
+        {selesaiGrooming.map(itemGrooming => {
+          return (
+            <CardPesanan
+              onPress={() =>
+                navigation.navigate('DetailPesananGrooming', itemGrooming)
+              }
+              key={itemGrooming.id}
+              nama={itemGrooming.user.name}
+              jenisHewan={itemGrooming.animal_type}
+              total={itemGrooming.total}
+              status={itemGrooming.status}
+            />
+          );
+        })}
       </View>
       <Gap height={20} />
     </ScrollView>
@@ -144,13 +399,40 @@ const Selesai = () => {
 
 const Batal = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {batalGrooming} = useSelector(state => state.pesananReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    dispatch(getBatalGrooming());
+    // console.log('grooming :', pendingGrooming);
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getBatalGrooming());
+    setRefreshing(false);
+  };
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.contentPage}>
-        <CardPesanan
-          onPress={() => navigation.navigate('DetailPesananPraktik')}
-        />
-        <CardPesanan />
+        {batalGrooming.map(itemGrooming => {
+          return (
+            <CardPesanan
+              onPress={() =>
+                navigation.navigate('DetailPesananGrooming', itemGrooming)
+              }
+              key={itemGrooming.id}
+              nama={itemGrooming.user.name}
+              jenisHewan={itemGrooming.animal_type}
+              total={itemGrooming.total}
+              status={itemGrooming.status}
+            />
+          );
+        })}
       </View>
       <Gap height={20} />
     </ScrollView>
@@ -164,21 +446,19 @@ const PesananGroomingTabSection = () => {
   const [routes] = React.useState([
     {key: '1', title: 'Konfirmasi'},
     {key: '2', title: 'Penjemputan'},
-    {key: '3', title: 'Pengambilan'},
-    {key: '4', title: 'Diproses'},
-    {key: '5', title: 'Diantar'},
-    {key: '6', title: 'Selesai'},
-    {key: '7', title: 'Dibatalkan'},
+    {key: '3', title: 'Diproses'},
+    {key: '4', title: 'Diantar'},
+    {key: '5', title: 'Selesai'},
+    {key: '6', title: 'Dibatalkan'},
   ]);
 
   const renderScene = SceneMap({
     1: Konfirmasi,
     2: Penjemputan,
-    3: Pengambilan,
-    4: Proses,
-    5: Antar,
-    6: Selesai,
-    7: Batal,
+    3: Proses,
+    4: Antar,
+    5: Selesai,
+    6: Batal,
   });
 
   return (

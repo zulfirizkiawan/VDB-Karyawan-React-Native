@@ -1,17 +1,33 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Status, Gap} from '../../atoms';
+import {Status, Gap, Buttons} from '../../atoms';
 import {DummyCat} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 import ItemValue from '../ItemValue';
+import Number from '../Number';
 
-const CardPesanan = ({onPress}) => {
+const CardPesanan = ({
+  onPress,
+  total,
+  jenisHewan,
+  nama,
+  status,
+  onCancel,
+  textBtn,
+  onNext,
+}) => {
   return (
     <TouchableOpacity style={styles.content} onPress={onPress}>
       <ItemValue
         label="Status"
-        value="PENJEMPUTAN"
-        valueColor={'Paid' === 'CANCELLED' ? '#D9435E' : '#F1A852'}
+        value={status}
+        valueColor={
+          status === 'DIBATALKAN'
+            ? '#D9435E'
+            : status === 'SELESAI'
+            ? '#1ABC9C'
+            : '#F1A852'
+        }
       />
       <Gap height={5} />
       <View style={styles.garis} />
@@ -22,18 +38,47 @@ const CardPesanan = ({onPress}) => {
         <View style={styles.wrapStatus}>
           <View style={styles.flex}>
             <Text style={styles.txt}>Nama Pemilik</Text>
-            <Text style={styles.txtHasil}>Aril Noah</Text>
+            <Text style={styles.txtHasil}>{nama}</Text>
           </View>
           <View style={styles.flex}>
             <Text style={styles.txt}>Jenis Hewan</Text>
-            <Text style={styles.txtHasil}>Kucing</Text>
+            <Text style={styles.txtHasil}>{jenisHewan}</Text>
           </View>
           <View style={styles.flex}>
             <Text style={styles.txt}>Total</Text>
-            <Text style={styles.txtHasil}>Rp. 55.000</Text>
+            <Number number={total} style={styles.txtHasil} />
           </View>
         </View>
       </View>
+      {/* //-----// */}
+      {status === 'PENDING' ? (
+        <View>
+          <Gap height={10} />
+          <View style={styles.garis} />
+          <View style={styles.flex}>
+            <TouchableOpacity style={styles.BtnTolak} onPress={onCancel}>
+              <Text style={styles.TxtTolak}>Tolak</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.BtnLogin} onPress={onNext}>
+              <Text style={styles.TxtLogin}>{textBtn}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : status === 'SELESAI' ? (
+        <View></View>
+      ) : status === 'DIBATALKAN' ? (
+        <View></View>
+      ) : (
+        <View>
+          <Gap height={10} />
+          <View style={styles.garis} />
+          <View>
+            <TouchableOpacity style={styles.BtnLogin} onPress={onNext}>
+              <Text style={styles.TxtLogin}>{textBtn}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -78,5 +123,33 @@ const styles = StyleSheet.create({
   garis: {
     height: 0.7,
     backgroundColor: colors.Bg.five,
+  },
+  BtnLogin: {
+    backgroundColor: colors.primary,
+    paddingVertical: 7,
+    borderRadius: 30,
+    width: '45%',
+    alignSelf: 'flex-end',
+    marginTop: 10,
+  },
+  BtnTolak: {
+    backgroundColor: colors.secondary,
+    paddingVertical: 7,
+    borderRadius: 30,
+    width: '45%',
+    alignSelf: 'flex-end',
+    marginTop: 10,
+  },
+  TxtLogin: {
+    color: 'white',
+    fontSize: 14,
+    fontFamily: fonts.primary[400],
+    textAlign: 'center',
+  },
+  TxtTolak: {
+    color: 'white',
+    fontSize: 14,
+    fontFamily: fonts.primary[400],
+    textAlign: 'center',
   },
 });

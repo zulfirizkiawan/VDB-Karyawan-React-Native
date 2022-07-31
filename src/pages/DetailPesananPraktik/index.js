@@ -1,10 +1,23 @@
 import React from 'react';
+import {useEffect} from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {DummyProfile} from '../../assets';
 import {Gap, Header, Input, ItemValue, Status} from '../../components';
+import {getDokterData} from '../../redux/action';
 import {colors, fonts} from '../../utils';
 
-const DetailPesananPraktik = ({navigation}) => {
+const DetailPesananPraktik = ({navigation, route}) => {
+  const itemPraktik = route.params;
+  const formatedDate = new Date(itemPraktik.created_at * 1000).toDateString();
+
+  const dispatch = useDispatch();
+  const {dokter} = useSelector(state => state.homeReducer);
+
+  useEffect(() => {
+    dispatch(getDokterData());
+  }, []);
+
   return (
     <View style={styles.Page}>
       <Header title="Detail Pesanan" onPress={() => navigation.goBack()} />
@@ -14,55 +27,80 @@ const DetailPesananPraktik = ({navigation}) => {
           <Gap height={20} />
           <ItemValue
             label="Status"
-            value="PENJEMPUTAN"
-            valueColor={'Paid' === 'CANCELLED' ? '#D9435E' : '#F1A852'}
+            value={itemPraktik.status}
+            valueColor={
+              itemPraktik.status === 'DIBATALKAN'
+                ? '#D9435E'
+                : itemPraktik.status === 'SELESAI'
+                ? '#1ABC9C'
+                : '#F1A852'
+            }
           />
-          <ItemValue label="Tanggal Pemesanan " value="18 Okt 2021" />
+          <ItemValue label="Tanggal Pemesanan " value={formatedDate} />
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>informasi Hewan</Text>
-          <ItemValue label="Nama Hewan " value="Bisqi" />
-          <ItemValue label="Jenis Hewan " value="Kucing" />
-          <ItemValue label="Keturunan" value="Persia" />
-          <ItemValue label="Jenis kelamin" value="Betina" />
+          <ItemValue label="Nama Hewan " value={itemPraktik.animal_name} />
+          <ItemValue label="Jenis Hewan " value={itemPraktik.animal_type} />
+          <ItemValue label="Keturunan" value={itemPraktik.descendants} />
+          <ItemValue label="Jenis kelamin" value={itemPraktik.animal_gender} />
           <ItemValue
-            label="Gejala Pertama"
-            value="Muntah-muntah"
+            label="Tindakan Pertama"
+            value={itemPraktik.first_symptom}
             valueColor="#4552CB"
           />
           <ItemValue
-            label="Gejala kedua"
-            value="Tubuh panas / hangat"
+            label="Tindakan kedua"
+            value={itemPraktik.second_symptom}
             valueColor="#4552CB"
           />
+          {dokter.map(itemDokter => {
+            return (
+              <ItemValue
+                label="Nama Dr. Hewan"
+                value={itemDokter.name}
+                key={itemDokter.id}
+              />
+            );
+          })}
           <Gap height={8} />
           <View>
             <Text style={styles.txt}>Catatan :</Text>
             <Gap height={3} />
-            <Text style={styles.txtHasil}>
-              Hati hati ya kak, kucingnya galak
-            </Text>
-          </View>
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.informasiHewan}>Pesanan Dari :</Text>
-          <ItemValue label="Nama " value="Rizkiawan" />
-          <ItemValue label="No. Hp" value="08586756282" />
-          <Gap height={8} />
-          <View>
-            <Text style={styles.txt}>Alamat :</Text>
-            <Gap height={3} />
-            <Text style={styles.txtHasil}>
-              Purboyo, Purwosekar, Tajinan, Malang
-            </Text>
+            <Text style={styles.txtHasil}>{itemPraktik.note}</Text>
           </View>
         </View>
 
         <View style={styles.content}>
-          <ItemValue label="Subtotal " value="Rp. 50.000" />
-          <ItemValue label="Ongkos Antar Jemput" value="10.000" />
-          <ItemValue label="Diskon " value="- 5.000" />
-          <ItemValue label="Total " value="Rp. 50.000" valueColor="#27AE60" />
+          <Text style={styles.informasiHewan}>Pesanan Dari :</Text>
+          <ItemValue label="Nama " value={itemPraktik.user.name} />
+          <ItemValue label="No. Hp" value={itemPraktik.user.phoneNumber} />
+          <Gap height={8} />
+          <View>
+            <Text style={styles.txt}>Alamat :</Text>
+            <Gap height={3} />
+            <Text style={styles.txtHasil}>{itemPraktik.user.address}</Text>
+          </View>
+        </View>
+
+        <View style={styles.content}>
+          <ItemValue label="Subtotal " numberRp value={itemPraktik.sub_total} />
+          <ItemValue
+            label="Ongkos Antar Jemput"
+            numberRp
+            value={itemPraktik.shipping_cost}
+          />
+          <ItemValue
+            label="Diskon "
+            numberRp
+            value={'- ' + itemPraktik.discount}
+          />
+          <ItemValue
+            label="Total "
+            numberRp
+            value={itemPraktik.total}
+            valueColor="#27AE60"
+          />
         </View>
 
         <Gap height={20} />
@@ -95,7 +133,7 @@ const styles = StyleSheet.create({
     color: colors.text.for,
   },
   txtHasil: {
-    fontFamily: fonts.primary[400],
+    fontFamily: fonts.primary[500],
     fontSize: 14,
     color: colors.text.primary,
   },

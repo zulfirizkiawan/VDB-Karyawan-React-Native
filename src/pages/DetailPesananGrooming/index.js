@@ -4,7 +4,9 @@ import {DummyProfile} from '../../assets';
 import {Gap, Header, ItemValue} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const DetailPesananGrooming = ({navigation}) => {
+const DetailPesananGrooming = ({navigation, route}) => {
+  const itemGrooming = route.params;
+  const formatedDate = new Date(itemGrooming.created_at * 1000).toDateString();
   return (
     <View style={styles.Page}>
       <Header title="Detail Pesanan" onPress={() => navigation.goBack()} />
@@ -14,50 +16,69 @@ const DetailPesananGrooming = ({navigation}) => {
           <Gap height={20} />
           <ItemValue
             label="Status"
-            value="PENJEMPUTAN"
-            valueColor={'Paid' === 'CANCELLED' ? '#D9435E' : '#F1A852'}
+            value={itemGrooming.status}
+            valueColor={
+              itemGrooming.status === 'DIBATALKAN'
+                ? '#D9435E'
+                : itemGrooming.status === 'SELESAI'
+                ? '#1ABC9C'
+                : '#F1A852'
+            }
           />
-          <ItemValue label="Tanggal Pemesanan " value="18 Okt 2021" />
+          <ItemValue label="Tanggal Pemesanan " value={formatedDate} />
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>informasi Hewan</Text>
-          <ItemValue label="Nama Hewan " value="Bisqi" />
-          <ItemValue label="Jenis Hewan " value="Kucing" />
-          <ItemValue label="Keturunan" value="Persia" />
-          <ItemValue label="Jenis kelamin" value="Betina" />
+          <ItemValue label="Nama Hewan " value={itemGrooming.animal_name} />
+          <ItemValue label="Jenis Hewan " value={itemGrooming.animal_type} />
+          <ItemValue label="Keturunan" value={itemGrooming.descendants} />
+          <ItemValue label="Jenis kelamin" value={itemGrooming.animal_gender} />
           <ItemValue
             label="Paket Grooming"
-            value="Grooming 1"
+            value={itemGrooming.packet_grooming}
             valueColor="#4552CB"
           />
           <Gap height={8} />
           <View>
             <Text style={styles.txt}>Catatan :</Text>
             <Gap height={3} />
-            <Text style={styles.txtHasil}>
-              Hati hati ya kak, kucingnya galak
-            </Text>
+            <Text style={styles.txtHasil}>{itemGrooming.note}</Text>
           </View>
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>Pesanan Dari :</Text>
-          <ItemValue label="Nama " value="Rizkiawan" />
-          <ItemValue label="No. Hp" value="08586756282" />
+          <ItemValue label="Nama " value={itemGrooming.user.name} />
+          <ItemValue label="No. Hp" value={itemGrooming.user.phoneNumber} />
           <Gap height={8} />
           <View>
             <Text style={styles.txt}>Alamat :</Text>
             <Gap height={3} />
-            <Text style={styles.txtHasil}>
-              Purboyo, Purwosekar, Tajinan, Malang
-            </Text>
+            <Text style={styles.txtHasil}>{itemGrooming.user.address}</Text>
           </View>
         </View>
 
         <View style={styles.content}>
-          <ItemValue label="Subtotal " value="Rp. 50.000" />
-          <ItemValue label="Ongkos Antar Jemput" value="10.000" />
-          <ItemValue label="Diskon " value="- 5.000" />
-          <ItemValue label="Total " value="Rp. 50.000" valueColor="#27AE60" />
+          <ItemValue
+            label="Subtotal "
+            numberRp
+            value={itemGrooming.sub_total}
+          />
+          <ItemValue
+            label="Ongkos Antar Jemput"
+            numberRp
+            value={itemGrooming.shipping_cost}
+          />
+          <ItemValue
+            label="Diskon "
+            numberRp
+            value={'- ' + itemGrooming.discount}
+          />
+          <ItemValue
+            label="Total "
+            numberRp
+            value={itemGrooming.total}
+            valueColor="#27AE60"
+          />
         </View>
 
         <Gap height={20} />
@@ -90,7 +111,7 @@ const styles = StyleSheet.create({
     color: colors.text.for,
   },
   txtHasil: {
-    fontFamily: fonts.primary[400],
+    fontFamily: fonts.primary[500],
     fontSize: 14,
     color: colors.text.primary,
   },

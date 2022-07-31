@@ -6,35 +6,61 @@ import {
   StyleSheet,
   Text,
   View,
+  RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Gap, Layanan, Slider, TotalPesananBeranda} from '../../components';
-import {getDiskonData} from '../../redux/action/home';
+import {
+  getAllGrooming,
+  getAllPenitipan,
+  getAllPraktik,
+  getDiskonData,
+} from '../../redux/action/home';
 import {colors, fonts, getData} from '../../utils';
 
 const Dashboard = ({navigation}) => {
   const [userProfile, setUserProfile] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getData('userProfile').then(res => {
-      console.log('token :', res);
+      // console.log('token :', res);
       setUserProfile(res);
     });
   }, []);
 
   const dispatch = useDispatch();
-  const {diskon} = useSelector(state => state.homeReducer);
+  const {diskon, totalGrooming, totalPenitipan, totalPraktik} = useSelector(
+    state => state.homeReducer,
+  );
 
   useEffect(() => {
     dispatch(getDiskonData());
+    dispatch(getAllGrooming());
+    dispatch(getAllPenitipan());
+    dispatch(getAllPraktik());
   }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getDiskonData());
+    dispatch(getAllGrooming());
+    dispatch(getAllPenitipan());
+    dispatch(getAllPraktik());
+
+    setRefreshing(false);
+  };
 
   return (
     <View style={styles.page}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {/* Profil */}
-        <Gap height={40} />
+        <Gap height={20} />
         <View style={styles.wrapProfil}>
           <View>
             <Text style={styles.hallo}>Hallo, Apa kabar ?</Text>
@@ -69,17 +95,17 @@ const Dashboard = ({navigation}) => {
           <View style={styles.wrapRiwayat}>
             <TotalPesananBeranda
               category="Grooming"
-              total={144}
+              total={totalGrooming.length}
               color="#1AB1B0"
             />
             <TotalPesananBeranda
               category="Penitipan"
-              total={40}
+              total={totalPenitipan.length}
               color="#FF7544"
             />
             <TotalPesananBeranda
               category="Praktik"
-              total={42}
+              total={totalPraktik.length}
               color="#FF4F74"
             />
           </View>

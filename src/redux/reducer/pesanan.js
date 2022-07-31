@@ -1,38 +1,54 @@
 const initPesanan = {
-  pesananGrooming: [],
-  pesananPenitipan: [],
-  pesananPraktik: [],
-  //----
+  //---- grooming
+  pendingGrooming: [],
+  penjemputanGrooming: [],
+  prosesGrooming: [],
+  antarGrooming: [],
   selesaiGrooming: [],
   batalGrooming: [],
-  //---
+  //---penitipan
+  pendingPenitipan: [],
+  penjemputanPenitipan: [],
+  prosesPenitipan: [],
+  antarPenitipan: [],
   selesaiPenitipan: [],
   batalPenitipan: [],
-  //---
+
+  //--- praktik
+  pendingPraktik: [],
+  penjemputanPraktik: [],
+  prosesPraktik: [],
+  antarPraktik: [],
   selesaiPraktik: [],
   batalPraktik: [],
 };
 
 export const pesananReducer = (state = initPesanan, action) => {
-  if (action.type === 'SET_PESANAN_GROOMING') {
+  //--- grooming
+  if (action.type === 'SET_PENDING_GROOMING') {
     return {
       ...state,
-      pesananGrooming: action.value,
+      pendingGrooming: action.value,
     };
   }
-  if (action.type === 'SET_PESANAN_PENITIPAN') {
+  if (action.type === 'SET_PENJEMPUTAN_GROOMING') {
     return {
       ...state,
-      pesananPenitipan: action.value,
+      penjemputanGrooming: action.value,
     };
   }
-  if (action.type === 'SET_PESANAN_PRAKTIK') {
+  if (action.type === 'SET_PROSES_GROOMING') {
     return {
       ...state,
-      pesananPraktik: action.value,
+      prosesGrooming: action.value,
     };
   }
-  //----
+  if (action.type === 'SET_ANTAR_GROOMING') {
+    return {
+      ...state,
+      antarGrooming: action.value,
+    };
+  }
   if (action.type === 'SET_SELESAI_GROOMING') {
     return {
       ...state,
@@ -45,7 +61,31 @@ export const pesananReducer = (state = initPesanan, action) => {
       batalGrooming: action.value,
     };
   }
-  //----
+  //---- penitipan
+  if (action.type === 'SET_PENDING_PENITIPAN') {
+    return {
+      ...state,
+      pendingPenitipan: action.value,
+    };
+  }
+  if (action.type === 'SET_PENJEMPUTAN_PENITIPAN') {
+    return {
+      ...state,
+      penjemputanPenitipan: action.value,
+    };
+  }
+  if (action.type === 'SET_PROSES_PENITIPAN') {
+    return {
+      ...state,
+      prosesPenitipan: action.value,
+    };
+  }
+  if (action.type === 'SET_ANTAR_PENITIPAN') {
+    return {
+      ...state,
+      antarPenitipan: action.value,
+    };
+  }
   if (action.type === 'SET_SELESAI_PENITIPAN') {
     return {
       ...state,
@@ -58,8 +98,31 @@ export const pesananReducer = (state = initPesanan, action) => {
       batalPenitipan: action.value,
     };
   }
-  //----
-
+  //---- praktik
+  if (action.type === 'SET_PENDING_PRAKTIK') {
+    return {
+      ...state,
+      pendingPraktik: action.value,
+    };
+  }
+  if (action.type === 'SET_PENJEMPUTAN_PRAKTIK') {
+    return {
+      ...state,
+      penjemputanPraktik: action.value,
+    };
+  }
+  if (action.type === 'SET_PROSES_PRAKTIK') {
+    return {
+      ...state,
+      prosesPraktik: action.value,
+    };
+  }
+  if (action.type === 'SET_ANTAR_PRAKTIK') {
+    return {
+      ...state,
+      antarPraktik: action.value,
+    };
+  }
   if (action.type === 'SET_SELESAI_PRAKTIK') {
     return {
       ...state,

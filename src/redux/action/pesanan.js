@@ -5,231 +5,200 @@ const API_HOST = {
   url: 'http://vdb.otwlulus.com/api',
 };
 
-export const getGrooming = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.all([
-      Axios.get(`${API_HOST.url}/grooming?status=PENDING`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/grooming?status=PENJEMPUTAN`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/grooming?status=DI PROSES`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/grooming?status=DI ANTAR`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-    ])
-      .then(
-        Axios.spread((res1, res2, res3, res4) => {
-          const pending = res1.data.data.data;
-          const penjemputan = res2.data.data.data;
-          const diProses = res3.data.data.data;
-          const diAntar = res4.data.data.data;
-          dispatch({
-            type: 'SET_PESANAN_GROOMING',
-            value: [...pending, ...penjemputan, ...diProses, ...diAntar],
-          });
-        }),
-      )
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di In Progress API');
-      });
-  });
-};
-
-export const getPenitipan = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.all([
-      Axios.get(`${API_HOST.url}/penitipan?status=PENDING`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/penitipan?status=PENJEMPUTAN`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/penitipan?status=DI PROSES`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/penitipan?status=DI ANTAR`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-    ])
-      .then(
-        Axios.spread((res1, res2, res3, res4) => {
-          const pending = res1.data.data.data;
-          const penjemputan = res2.data.data.data;
-          const diProses = res3.data.data.data;
-          const diAntar = res4.data.data.data;
-
-          dispatch({
-            type: 'SET_PESANAN_PENITIPAN',
-            value: [...pending, ...penjemputan, ...diProses, ...diAntar],
-          });
-        }),
-      )
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di In Progress API');
-      });
-  });
-};
-
-export const getPraktik = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.all([
-      Axios.get(`${API_HOST.url}/praktik?status=PENDING`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/praktik?status=PENJEMPUTAN`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/praktik?status=DI PROSES`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-      Axios.get(`${API_HOST.url}/praktik?status=DI ANTAR`, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      }),
-    ])
-      .then(
-        Axios.spread((res1, res2, res3, res4) => {
-          const pending = res1.data.data.data;
-          const penjemputan = res2.data.data.data;
-          const diProses = res3.data.data.data;
-          const diAntar = res4.data.data.data;
-
-          dispatch({
-            type: 'SET_PESANAN_PRAKTIK',
-            value: [...pending, ...penjemputan, ...diProses, ...diAntar],
-          });
-        }),
-      )
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di In Progress API');
-      });
-  });
-};
-
 //----- riwayat grooming ----//
-export const getSelesaiGrooming = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.get(`${API_HOST.url}/grooming?status=SELESAI`, {
-      headers: {
-        Authorization: resToken.value,
-      },
+
+export const getPendingGrooming = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allGrooming?status=PENDING`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_PENDING_GROOMING', value: res.data.data.data});
     })
-      .then(res => {
-        // console.log('get Rgrooming :', res.data.data.data);
-        dispatch({type: 'SET_SELESAI_GROOMING', value: res.data.data.data});
-      })
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di API Grooming');
-      });
-  });
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Grooming');
+    });
+};
+
+export const getPenjemputanGrooming = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allGrooming?status=PENJEMPUTAN`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_PENJEMPUTAN_GROOMING', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Grooming');
+    });
+};
+
+export const getProsesGrooming = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allGrooming?status=DI PROSES`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_PROSES_GROOMING', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Grooming');
+    });
+};
+
+export const getAntarGrooming = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allGrooming?status=DI ANTAR`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_ANTAR_GROOMING', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Grooming');
+    });
+};
+
+export const getSelesaiGrooming = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allGrooming?status=SELESAI`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_SELESAI_GROOMING', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Grooming');
+    });
 };
 
 export const getBatalGrooming = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.get(`${API_HOST.url}/grooming?status=DIBATALKAN`, {
-      headers: {
-        Authorization: resToken.value,
-      },
+  Axios.get(`${API_HOST.url}/allGrooming?status=DIBATALKAN`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_BATAL_GROOMING', value: res.data.data.data});
     })
-      .then(res => {
-        // console.log('get Rgrooming :', res.data.data.data);
-        dispatch({type: 'SET_BATAL_GROOMING', value: res.data.data.data});
-      })
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di API Grooming');
-      });
-  });
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Grooming');
+    });
 };
 
 //----- riwayat penitipan ----//
-export const getSelesaiPenitipan = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.get(`${API_HOST.url}/penitipan?status=SELESAI`, {
-      headers: {
-        Authorization: resToken.value,
-      },
+export const getPendingPenitipan = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPenitipan?status=PENDING`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_PENDING_PENITIPAN', value: res.data.data.data});
     })
-      .then(res => {
-        dispatch({type: 'SET_SELESAI_PENITIPAN', value: res.data.data.data});
-      })
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di API Penitipan');
-      });
-  });
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PENITIPAN');
+    });
+};
+
+export const getPenjemputanPenitipan = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPenitipan?status=PENJEMPUTAN`)
+    .then(res => {
+      // console.log('get RPENITIPAN :', res.data.data.data);
+      dispatch({type: 'SET_PENJEMPUTAN_PENITIPAN', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PENITIPAN');
+    });
+};
+
+export const getProsesPenitipan = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPenitipan?status=DI PROSES`)
+    .then(res => {
+      // console.log('get RPENITIPAN :', res.data.data.data);
+      dispatch({type: 'SET_PROSES_PENITIPAN', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PENITIPAN');
+    });
+};
+
+export const getAntarPenitipan = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPenitipan?status=DI ANTAR`)
+    .then(res => {
+      // console.log('get RPENITIPAN :', res.data.data.data);
+      dispatch({type: 'SET_ANTAR_PENITIPAN', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PENITIPAN');
+    });
+};
+
+export const getSelesaiPenitipan = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPenitipan?status=SELESAI`)
+    .then(res => {
+      dispatch({type: 'SET_SELESAI_PENITIPAN', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Penitipan');
+    });
 };
 
 export const getBatalPenitipan = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.get(`${API_HOST.url}/penitipan?status=DIBATALKAN`, {
-      headers: {
-        Authorization: resToken.value,
-      },
+  Axios.get(`${API_HOST.url}/allPenitipan?status=DIBATALKAN`)
+    .then(res => {
+      dispatch({type: 'SET_BATAL_PENITIPAN', value: res.data.data.data});
     })
-      .then(res => {
-        dispatch({type: 'SET_BATAL_PENITIPAN', value: res.data.data.data});
-      })
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di API Penitipan');
-      });
-  });
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Penitipan');
+    });
 };
 
 //----- riwayat praktik ----//
-export const getSelesaiPraktik = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.get(`${API_HOST.url}/praktik?status=SELESAI`, {
-      headers: {
-        Authorization: resToken.value,
-      },
+export const getPendingPraktik = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPraktik?status=PENDING`)
+    .then(res => {
+      // console.log('get Rgrooming :', res.data.data.data);
+      dispatch({type: 'SET_PENDING_PRAKTIK', value: res.data.data.data});
     })
-      .then(res => {
-        dispatch({type: 'SET_SELESAI_PRAKTIK', value: res.data.data.data});
-      })
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di API Praktik');
-      });
-  });
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PRAKTIK');
+    });
+};
+
+export const getPenjemputanPraktik = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPraktik?status=PENJEMPUTAN`)
+    .then(res => {
+      // console.log('get RPRAKTIK :', res.data.data.data);
+      dispatch({type: 'SET_PENJEMPUTAN_PRAKTIK', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PRAKTIK');
+    });
+};
+
+export const getProsesPraktik = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPraktik?status=DI PROSES`)
+    .then(res => {
+      // console.log('get RPRAKTIK :', res.data.data.data);
+      dispatch({type: 'SET_PROSES_PRAKTIK', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PRAKTIK');
+    });
+};
+
+export const getAntarPraktik = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPraktik?status=DI ANTAR`)
+    .then(res => {
+      // console.log('get RPRAKTIK :', res.data.data.data);
+      dispatch({type: 'SET_ANTAR_PRAKTIK', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API PRAKTIK');
+    });
+};
+
+export const getSelesaiPraktik = () => dispatch => {
+  Axios.get(`${API_HOST.url}/allPraktik?status=SELESAI`)
+    .then(res => {
+      dispatch({type: 'SET_SELESAI_PRAKTIK', value: res.data.data.data});
+    })
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Praktik');
+    });
 };
 
 export const getBatalPraktik = () => dispatch => {
-  getData('token').then(resToken => {
-    Axios.get(`${API_HOST.url}/praktik?status=DIBATALKAN`, {
-      headers: {
-        Authorization: resToken.value,
-      },
+  Axios.get(`${API_HOST.url}/allPraktik?status=DIBATALKAN`)
+    .then(res => {
+      dispatch({type: 'SET_BATAL_PRAKTIK', value: res.data.data.data});
     })
-      .then(res => {
-        dispatch({type: 'SET_BATAL_PRAKTIK', value: res.data.data.data});
-      })
-      .catch(err => {
-        showMessage('Terjadi Kesalahan di API Praktik');
-      });
-  });
+    .catch(err => {
+      showMessage('Terjadi Kesalahan di API Praktik');
+    });
 };

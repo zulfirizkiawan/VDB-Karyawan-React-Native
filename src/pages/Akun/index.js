@@ -11,7 +11,6 @@ const Akun = ({navigation}) => {
 
   useEffect(() => {
     getData('userProfile').then(res => {
-      console.log('token :', res);
       setUserProfile(res);
     });
   }, []);
@@ -52,10 +51,10 @@ const Akun = ({navigation}) => {
           text="Edit Profile"
           onPress={() => navigation.navigate('LihatProfile')}
         />
-        <ItemListMenu
+        {/* <ItemListMenu
           text="Pusat Bantuan"
           onPress={() => navigation.navigate('PusatBantuan')}
-        />
+        /> */}
         <ItemListMenu text="Keluar Akun" onPress={showDialog} />
         <Dialog.Container visible={visible}>
           <Dialog.Title>Keluar dari aplikasi</Dialog.Title>
@@ -73,7 +72,7 @@ export default Akun;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    // paddingVertical: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
