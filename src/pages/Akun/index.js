@@ -4,17 +4,20 @@ import {Gap, ItemListMenu} from '../../components';
 import {colors, fonts, getData} from '../../utils';
 import Dialog from 'react-native-dialog';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {DummyProfile} from '../../assets';
 
 const Akun = ({navigation}) => {
   const [visible, setVisible] = useState(false);
   const [userProfile, setUserProfile] = useState({});
+const [photo, setPhoto] = useState(DummyProfile);
 
   useEffect(() => {
-    getData('userProfile').then(res => {
-      setUserProfile(res);
+    navigation.addListener('focus', () => {
+      getData('userProfile').then(res => {
+        setPhoto({uri: res.profile_photo_url});
+      });
     });
-  }, []);
-
+  }, [navigation]);
   const showDialog = () => {
     setVisible(true);
   };
@@ -38,7 +41,7 @@ const Akun = ({navigation}) => {
         </View>
         <View style={styles.wrapProfile}>
           <Image
-            source={{uri: userProfile.profile_photo_url}}
+            source={photo}
             style={styles.avatar}
           />
           <Gap height={24} />

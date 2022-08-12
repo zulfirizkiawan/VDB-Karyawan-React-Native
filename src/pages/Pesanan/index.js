@@ -7,9 +7,6 @@ const Pesanan = ({navigation}) => {
   return (
     <View style={styles.page}>
       <Text style={styles.judulPage}>Pesanan</Text>
-      {/* <View style={styles.tabContainer}>
-        <PesananTabSection />
-      </View> */}
       {/* Layanan */}
 
       <View style={styles.wrapRiwayat}>
