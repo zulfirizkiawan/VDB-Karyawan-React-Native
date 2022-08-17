@@ -9,12 +9,13 @@ import {DummyProfile} from '../../assets';
 const Akun = ({navigation}) => {
   const [visible, setVisible] = useState(false);
   const [userProfile, setUserProfile] = useState({});
-const [photo, setPhoto] = useState(DummyProfile);
+  const [photo, setPhoto] = useState(DummyProfile);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
       getData('userProfile').then(res => {
         setPhoto({uri: res.profile_photo_url});
+        setUserProfile(res);
       });
     });
   }, [navigation]);
@@ -40,10 +41,7 @@ const [photo, setPhoto] = useState(DummyProfile);
           <Text style={styles.TxtHeader}>Akun</Text>
         </View>
         <View style={styles.wrapProfile}>
-          <Image
-            source={photo}
-            style={styles.avatar}
-          />
+          <Image source={photo} style={styles.avatar} />
           <Gap height={24} />
           <Text style={styles.nama}>{userProfile.name}</Text>
         </View>
@@ -54,10 +52,6 @@ const [photo, setPhoto] = useState(DummyProfile);
           text="Edit Profile"
           onPress={() => navigation.navigate('LihatProfile')}
         />
-        {/* <ItemListMenu
-          text="Pusat Bantuan"
-          onPress={() => navigation.navigate('PusatBantuan')}
-        /> */}
         <ItemListMenu text="Keluar Akun" onPress={showDialog} />
         <Dialog.Container visible={visible}>
           <Dialog.Title>Keluar dari aplikasi</Dialog.Title>

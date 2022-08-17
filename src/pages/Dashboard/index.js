@@ -22,12 +22,13 @@ import {DummyProfile} from '../../assets';
 const Dashboard = ({navigation}) => {
   const [userProfile, setUserProfile] = useState({});
   const [refreshing, setRefreshing] = useState(false);
- const [photo, setPhoto] = useState(DummyProfile);
+  const [photo, setPhoto] = useState(DummyProfile);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
       getData('userProfile').then(res => {
         setPhoto({uri: res.profile_photo_url});
+        setUserProfile(res);
       });
     });
   }, [navigation]);
@@ -69,10 +70,7 @@ const Dashboard = ({navigation}) => {
             <Text style={styles.hallo}>Hallo, Apa kabar ?</Text>
             <Text style={styles.namaUser}>{userProfile.name}</Text>
           </View>
-          <Image
-            source={photo}
-            style={styles.avatar}
-          />
+          <Image source={photo} style={styles.avatar} />
         </View>
         <Gap height={20} />
         <View style={styles.wrapContent}>
