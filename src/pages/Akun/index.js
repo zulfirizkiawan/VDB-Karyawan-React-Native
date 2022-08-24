@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     // paddingVertical: 20,
+    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
