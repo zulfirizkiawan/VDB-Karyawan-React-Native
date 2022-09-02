@@ -143,6 +143,7 @@ const Konfirmasi = () => {
               onCancel={cancelGrooming}
               onNext={nextGrooming}
               textBtn="Terima"
+              images={{uri: itemGrooming.grooming_photo_path}}
             />
           );
         })}
@@ -211,6 +212,7 @@ const Penjemputan = () => {
               status={itemGrooming.status}
               onNext={nextGrooming}
               textBtn="Proses"
+              images={{uri: itemGrooming.grooming_photo_path}}
             />
           );
         })}
@@ -279,6 +281,7 @@ const Proses = () => {
               status={itemGrooming.status}
               onNext={nextGrooming}
               textBtn="Antar"
+              images={{uri: itemGrooming.grooming_photo_path}}
             />
           );
         })}
@@ -347,6 +350,7 @@ const Antar = () => {
               status={itemGrooming.status}
               onNext={nextGrooming}
               textBtn="Selesai"
+              images={{uri: itemGrooming.grooming_photo_path}}
             />
           );
         })}
@@ -388,6 +392,7 @@ const Selesai = () => {
               jenisHewan={itemGrooming.animal_type}
               total={itemGrooming.total}
               status={itemGrooming.status}
+              images={{uri: itemGrooming.grooming_photo_path}}
             />
           );
         })}
@@ -405,7 +410,6 @@ const Batal = () => {
 
   useEffect(() => {
     dispatch(getBatalGrooming());
-    // console.log('grooming :', pendingGrooming);
   }, []);
 
   const onRefresh = () => {
@@ -430,6 +434,7 @@ const Batal = () => {
               jenisHewan={itemGrooming.animal_type}
               total={itemGrooming.total}
               status={itemGrooming.status}
+              images={{uri: itemGrooming.grooming_photo_path}}
             />
           );
         })}

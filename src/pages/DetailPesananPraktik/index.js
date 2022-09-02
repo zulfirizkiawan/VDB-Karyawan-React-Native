@@ -6,10 +6,11 @@ import {DummyProfile} from '../../assets';
 import {Gap, Header, Input, ItemValue, Status} from '../../components';
 import {getDokterData} from '../../redux/action';
 import {colors, fonts} from '../../utils';
+import moment from 'moment';
+import 'moment/locale/id';
 
 const DetailPesananPraktik = ({navigation, route}) => {
   const itemPraktik = route.params;
-  const formatedDate = new Date(itemPraktik.created_at * 1000).toDateString();
 
   const dispatch = useDispatch();
   const {dokter} = useSelector(state => state.homeReducer);
@@ -23,7 +24,10 @@ const DetailPesananPraktik = ({navigation, route}) => {
       <Header title="Detail Pesanan" onPress={() => navigation.goBack()} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          <Image source={DummyProfile} style={styles.avatar} />
+          <Image
+            source={{uri: itemPraktik.praktik_photo_path}}
+            style={styles.avatar}
+          />
           <Gap height={20} />
           <ItemValue
             label="Status"
@@ -36,7 +40,12 @@ const DetailPesananPraktik = ({navigation, route}) => {
                 : '#F1A852'
             }
           />
-          <ItemValue label="Tanggal Pemesanan " value={formatedDate} />
+          <ItemValue
+            label="Tanggal Pemesanan "
+            value={moment(itemPraktik.created_at * 1000).format(
+              'dddd, DD MMM YYYY',
+            )}
+          />
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>informasi Hewan</Text>
@@ -148,9 +157,9 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
   },
   avatar: {
-    height: 100,
-    width: 100,
-    borderRadius: 100 / 2,
+    height: 120,
+    width: 120,
+    borderRadius: 120 / 2,
     alignSelf: 'center',
   },
 });

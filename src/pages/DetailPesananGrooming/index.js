@@ -3,16 +3,20 @@ import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {DummyProfile} from '../../assets';
 import {Gap, Header, ItemValue} from '../../components';
 import {colors, fonts} from '../../utils';
+import moment from 'moment';
 
 const DetailPesananGrooming = ({navigation, route}) => {
   const itemGrooming = route.params;
-  const formatedDate = new Date(itemGrooming.created_at * 1000).toDateString();
+
   return (
     <View style={styles.Page}>
       <Header title="Detail Pesanan" onPress={() => navigation.goBack()} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          <Image source={DummyProfile} style={styles.avatar} />
+          <Image
+            source={{uri: itemGrooming.grooming_photo_path}}
+            style={styles.avatar}
+          />
           <Gap height={20} />
           <ItemValue
             label="Status"
@@ -25,7 +29,12 @@ const DetailPesananGrooming = ({navigation, route}) => {
                 : '#F1A852'
             }
           />
-          <ItemValue label="Tanggal Pemesanan " value={formatedDate} />
+          <ItemValue
+            label="Tanggal Pemesanan "
+            value={moment(itemGrooming.created_at * 1000).format(
+              'dddd, DD MMM YYYY',
+            )}
+          />
         </View>
         <View style={styles.content}>
           <Text style={styles.informasiHewan}>informasi Hewan</Text>
@@ -126,9 +135,9 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
   },
   avatar: {
-    height: 100,
-    width: 100,
-    borderRadius: 100 / 2,
+    height: 120,
+    width: 120,
+    borderRadius: 120 / 2,
     alignSelf: 'center',
   },
 });

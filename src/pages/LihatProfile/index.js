@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Gap, Header, Input} from '../../components';
 import {colors, fonts, getData, showMessage, storeData} from '../../utils';
@@ -27,53 +28,49 @@ const LihatProfile = ({navigation}) => {
     });
   };
 
-  const options = {
-    title: 'Select Image',
-    type: 'library',
-    options: {
-      maxWidth: 200,
-      maxHeight: 200,
-      selectionLimit: 1,
-      mediaType: 'photo',
-      includeBase64: false,
-    },
-  };
 
-  const updatePhoto = async () => {
-    const images = await launchImageLibrary(options);
-    console.log(images.assets[0]);
-    const dataImage = {
-      uri: images.assets[0].uri,
-      type: images.assets[0].type,
-      name: images.assets[0].fileName,
-    };
-    const photoForUpload = new FormData();
-    photoForUpload.append('file', dataImage);
-    getData('token').then(resToken => {
-      fetch('http://vdb.otwlulus.com/api/user/photo', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          Authorization: resToken.value,
-        },
-        body: photoForUpload,
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          console.log('response object:', responseJson.data);
-          getData('userProfile').then(resUser => {
-            showMessage('Update Photo Berhasil', 'success');
-            resUser.profile_photo_url = `http://vdb.otwlulus.com/storage/${responseJson.data[0]}`;
-            storeData('userProfile', resUser).then(() => {
-              updateUserProfile();
-            });
-          });
+  const updatePhoto = () => {
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      mediaType: 'photo',
+      includeBase64: true,
+    }).then(images => {
+      console.log(images);
+      const dataImage = {
+        uri: images.path,
+        type: images.mime,
+        name: 'profile_pic.jpeg',
+      };
+      const photoForUpload = new FormData();
+      photoForUpload.append('file', dataImage);
+      getData('token').then(resToken => {
+        fetch('http://vdb.otwlulus.com/api/user/photo', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: resToken.value,
+          },
+          body: photoForUpload,
         })
-        .catch(err => {
-          console.log('error :', err);
-          showMessage('Terjadi kesalahan di API Update Photo');
-        });
+          .then(response => response.json())
+          .then(responseJson => {
+            console.log('response object:', responseJson.data);
+            getData('userProfile').then(resUser => {
+              showMessage('Update Photo Berhasil', 'success');
+              resUser.profile_photo_url = `http://vdb.otwlulus.com/storage/${responseJson.data[0]}`;
+              storeData('userProfile', resUser).then(() => {
+                updateUserProfile();
+              });
+            });
+          })
+          .catch(err => {
+            console.log('error :', err);
+            showMessage('Terjadi kesalahan di API Update Photo');
+          });
+      });
     });
   };
 

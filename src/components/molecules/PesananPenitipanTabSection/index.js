@@ -142,6 +142,7 @@ const Konfirmasi = () => {
               onCancel={cancelPenitipan}
               onNext={nextPenitipan}
               textBtn="Terima"
+              images={{uri: itemPenitipan.penitipan_photo_path}}
             />
           );
         })}
@@ -210,6 +211,7 @@ const Penjemputan = () => {
               status={itemPenitipan.status}
               onNext={nextPenitipan}
               textBtn="Proses"
+              images={{uri: itemPenitipan.penitipan_photo_path}}
             />
           );
         })}
@@ -278,6 +280,7 @@ const Proses = () => {
               status={itemPenitipan.status}
               onNext={nextPenitipan}
               textBtn="Antar"
+              images={{uri: itemPenitipan.penitipan_photo_path}}
             />
           );
         })}
@@ -346,6 +349,7 @@ const Antar = () => {
               status={itemPenitipan.status}
               onNext={nextPenitipan}
               textBtn="Selesai"
+              images={{uri: itemPenitipan.penitipan_photo_path}}
             />
           );
         })}
@@ -387,6 +391,7 @@ const Selesai = () => {
               jenisHewan={itemPenitipan.animal_type}
               total={itemPenitipan.total}
               status={itemPenitipan.status}
+              images={{uri: itemPenitipan.penitipan_photo_path}}
             />
           );
         })}
@@ -404,7 +409,6 @@ const Batal = () => {
 
   useEffect(() => {
     dispatch(getBatalPenitipan());
-    // console.log('PgetBatalPenitipan :', pendingPgetBatalPenitipan);
   }, []);
 
   const onRefresh = () => {
@@ -429,6 +433,7 @@ const Batal = () => {
               jenisHewan={itemPenitipan.animal_type}
               total={itemPenitipan.total}
               status={itemPenitipan.status}
+              images={{uri: itemPenitipan.penitipan_photo_path}}
             />
           );
         })}

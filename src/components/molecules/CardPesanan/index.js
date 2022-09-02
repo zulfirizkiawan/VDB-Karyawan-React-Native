@@ -15,6 +15,7 @@ const CardPesanan = ({
   onCancel,
   textBtn,
   onNext,
+  images,
 }) => {
   return (
     <TouchableOpacity style={styles.content} onPress={onPress}>
@@ -33,7 +34,7 @@ const CardPesanan = ({
       <View style={styles.garis} />
       <Gap height={10} />
       <View style={styles.wrapContent}>
-        <Image source={DummyCat} style={styles.img} />
+        <Image source={images} style={styles.img} />
         <Gap width={10} />
         <View style={styles.wrapStatus}>
           <View style={styles.flex}>

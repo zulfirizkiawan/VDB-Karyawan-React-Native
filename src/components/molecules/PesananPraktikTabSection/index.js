@@ -142,6 +142,7 @@ const Konfirmasi = () => {
               onCancel={cancelPraktik}
               onNext={nextPraktik}
               textBtn="Terima"
+              images={{uri: itemPraktik.praktik_photo_path}}
             />
           );
         })}
@@ -210,6 +211,7 @@ const Penjemputan = () => {
               status={itemPraktik.status}
               onNext={nextPraktik}
               textBtn="Proses"
+              images={{uri: itemPraktik.praktik_photo_path}}
             />
           );
         })}
@@ -278,6 +280,7 @@ const Proses = () => {
               status={itemPraktik.status}
               onNext={nextPraktik}
               textBtn="Antar"
+              images={{uri: itemPraktik.praktik_photo_path}}
             />
           );
         })}
@@ -346,6 +349,7 @@ const Antar = () => {
               status={itemPraktik.status}
               onNext={nextPraktik}
               textBtn="Selesai"
+              images={{uri: itemPraktik.praktik_photo_path}}
             />
           );
         })}
@@ -387,6 +391,7 @@ const Selesai = () => {
               jenisHewan={itemPraktik.animal_type}
               total={itemPraktik.total}
               status={itemPraktik.status}
+              images={{uri: itemPraktik.praktik_photo_path}}
             />
           );
         })}
@@ -404,7 +409,6 @@ const Batal = () => {
 
   useEffect(() => {
     dispatch(getBatalPraktik());
-    // console.log('PgetBatalPraktik :', pendingPgetBatalPraktik);
   }, []);
 
   const onRefresh = () => {
@@ -429,6 +433,7 @@ const Batal = () => {
               jenisHewan={itemPraktik.animal_type}
               total={itemPraktik.total}
               status={itemPraktik.status}
+              images={{uri: itemPraktik.praktik_photo_path}}
             />
           );
         })}
