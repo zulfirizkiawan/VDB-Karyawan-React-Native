@@ -74,52 +74,44 @@ const Konfirmasi = () => {
     setRefreshing(false);
   };
 
-  const cancelPenitipan = () => {
-    {
-      pendingPenitipan.map(itemPenitipan => {
-        const data = {
-          status: 'DIBATALKAN',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPenitipan/${itemPenitipan.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('error cancel :', err);
-          });
+  const cancelPenitipan = id => {
+    const data = {
+      status: 'DIBATALKAN',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPenitipan/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('error cancel :', err);
       });
-    }
   };
 
-  const nextPenitipan = () => {
-    {
-      pendingPenitipan.map(itemPenitipan => {
-        const data = {
-          status: 'PENJEMPUTAN',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPenitipan/${itemPenitipan.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPenitipan = id => {
+    const data = {
+      status: 'PENJEMPUTAN',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPenitipan/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -139,8 +131,8 @@ const Konfirmasi = () => {
               jenisHewan={itemPenitipan.animal_type}
               total={itemPenitipan.total}
               status={itemPenitipan.status}
-              onCancel={cancelPenitipan}
-              onNext={nextPenitipan}
+              onCancel={() => cancelPenitipan(itemPenitipan.id)}
+              onNext={() => nextPenitipan(itemPenitipan.id)}
               textBtn="Terima"
               images={{uri: itemPenitipan.penitipan_photo_path}}
             />
@@ -168,28 +160,24 @@ const Penjemputan = () => {
     setRefreshing(false);
   };
 
-  const nextPenitipan = () => {
-    {
-      penjemputanPenitipan.map(itemPenitipan => {
-        const data = {
-          status: 'DI PROSES',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPenitipan/${itemPenitipan.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPenitipan = id => {
+    const data = {
+      status: 'DI PROSES',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPenitipan/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -209,7 +197,7 @@ const Penjemputan = () => {
               jenisHewan={itemPenitipan.animal_type}
               total={itemPenitipan.total}
               status={itemPenitipan.status}
-              onNext={nextPenitipan}
+              onNext={() => nextPenitipan(itemPenitipan.id)}
               textBtn="Proses"
               images={{uri: itemPenitipan.penitipan_photo_path}}
             />
@@ -237,28 +225,24 @@ const Proses = () => {
     setRefreshing(false);
   };
 
-  const nextPenitipan = () => {
-    {
-      prosesPenitipan.map(itemPenitipan => {
-        const data = {
-          status: 'DI ANTAR',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPenitipan/${itemPenitipan.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPenitipan = id => {
+    const data = {
+      status: 'DI ANTAR',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPenitipan/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -278,7 +262,7 @@ const Proses = () => {
               jenisHewan={itemPenitipan.animal_type}
               total={itemPenitipan.total}
               status={itemPenitipan.status}
-              onNext={nextPenitipan}
+              onNext={() => nextPenitipan(itemPenitipan.id)}
               textBtn="Antar"
               images={{uri: itemPenitipan.penitipan_photo_path}}
             />
@@ -306,28 +290,24 @@ const Antar = () => {
     setRefreshing(false);
   };
 
-  const nextPenitipan = () => {
-    {
-      antarPenitipan.map(itemPenitipan => {
-        const data = {
-          status: 'SELESAI',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPenitipan/${itemPenitipan.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPenitipan = id => {
+    const data = {
+      status: 'SELESAI',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPenitipan/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -347,7 +327,7 @@ const Antar = () => {
               jenisHewan={itemPenitipan.animal_type}
               total={itemPenitipan.total}
               status={itemPenitipan.status}
-              onNext={nextPenitipan}
+              onNext={() => nextPenitipan(itemPenitipan.id)}
               textBtn="Selesai"
               images={{uri: itemPenitipan.penitipan_photo_path}}
             />

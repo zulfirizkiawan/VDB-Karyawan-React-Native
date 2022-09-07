@@ -92,6 +92,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     marginTop: 15,
+    elevation: 4,
+    shadowColor: colors.text.for,
   },
   wrapContent: {
     flexDirection: 'row',

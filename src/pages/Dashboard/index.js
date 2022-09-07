@@ -77,7 +77,7 @@ const Dashboard = ({navigation}) => {
           <Text style={styles.Lbl}>Diskon Saat ini</Text>
           <View style={styles.garis} />
         </View>
-        {diskon.turn_off === 'yes' ? (
+        {diskon.turn_off === 'Yes' ? (
           <View />
         ) : (
           <View style={styles.wrapSlider}>
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   wrapSlider: {
     marginTop: 10,
-    alignItems: 'center',
+    paddingHorizontal: 15,
   },
   garis: {
     borderBottomColor: '#BDBDBD',

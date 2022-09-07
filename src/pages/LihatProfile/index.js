@@ -28,7 +28,6 @@ const LihatProfile = ({navigation}) => {
     });
   };
 
-
   const updatePhoto = () => {
     ImageCropPicker.openPicker({
       width: 300,
@@ -68,7 +67,7 @@ const LihatProfile = ({navigation}) => {
           })
           .catch(err => {
             console.log('error :', err);
-            showMessage('Terjadi kesalahan di API Update Photo');
+            showMessage('Terjadi kesalahan pada update foto');
           });
       });
     });

@@ -75,52 +75,46 @@ const Konfirmasi = () => {
     setRefreshing(false);
   };
 
-  const cancelGrooming = () => {
-    {
-      pendingGrooming.map(itemGrooming => {
-        const data = {
-          status: 'DIBATALKAN',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('error cancel :', err);
-          });
+  const cancelGrooming = id => {
+    const data = {
+      status: 'DIBATALKAN',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allGrooming/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('error cancel :', err);
       });
-    }
   };
 
-  const nextGrooming = () => {
-    {
-      pendingGrooming.map(itemGrooming => {
-        const data = {
-          status: 'PENJEMPUTAN',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextGrooming = id => {
+    console.log('id  :', id);
+
+    const data = {
+      status: 'PENJEMPUTAN',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allGrooming/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -140,8 +134,8 @@ const Konfirmasi = () => {
               jenisHewan={itemGrooming.animal_type}
               total={itemGrooming.total}
               status={itemGrooming.status}
-              onCancel={cancelGrooming}
-              onNext={nextGrooming}
+              onCancel={() => cancelGrooming(itemGrooming.id)}
+              onNext={() => nextGrooming(itemGrooming.id)}
               textBtn="Terima"
               images={{uri: itemGrooming.grooming_photo_path}}
             />
@@ -169,28 +163,24 @@ const Penjemputan = () => {
     setRefreshing(false);
   };
 
-  const nextGrooming = () => {
-    {
-      penjemputanGrooming.map(itemGrooming => {
-        const data = {
-          status: 'DI PROSES',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextGrooming = id => {
+    const data = {
+      status: 'DI PROSES',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allGrooming/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -210,7 +200,7 @@ const Penjemputan = () => {
               jenisHewan={itemGrooming.animal_type}
               total={itemGrooming.total}
               status={itemGrooming.status}
-              onNext={nextGrooming}
+              onNext={() => nextGrooming(itemGrooming.id)}
               textBtn="Proses"
               images={{uri: itemGrooming.grooming_photo_path}}
             />
@@ -238,28 +228,24 @@ const Proses = () => {
     setRefreshing(false);
   };
 
-  const nextGrooming = () => {
-    {
-      prosesGrooming.map(itemGrooming => {
-        const data = {
-          status: 'DI ANTAR',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextGrooming = id => {
+    const data = {
+      status: 'DI ANTAR',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allGrooming/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -279,7 +265,7 @@ const Proses = () => {
               jenisHewan={itemGrooming.animal_type}
               total={itemGrooming.total}
               status={itemGrooming.status}
-              onNext={nextGrooming}
+              onNext={() => nextGrooming(itemGrooming.id)}
               textBtn="Antar"
               images={{uri: itemGrooming.grooming_photo_path}}
             />
@@ -307,28 +293,24 @@ const Antar = () => {
     setRefreshing(false);
   };
 
-  const nextGrooming = () => {
-    {
-      antarGrooming.map(itemGrooming => {
-        const data = {
-          status: 'SELESAI',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allGrooming/${itemGrooming.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextGrooming = id => {
+    const data = {
+      status: 'SELESAI',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allGrooming/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -348,7 +330,7 @@ const Antar = () => {
               jenisHewan={itemGrooming.animal_type}
               total={itemGrooming.total}
               status={itemGrooming.status}
-              onNext={nextGrooming}
+              onNext={() => nextGrooming(itemGrooming.id)}
               textBtn="Selesai"
               images={{uri: itemGrooming.grooming_photo_path}}
             />

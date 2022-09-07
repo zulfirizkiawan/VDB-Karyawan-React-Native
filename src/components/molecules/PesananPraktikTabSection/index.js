@@ -74,52 +74,44 @@ const Konfirmasi = () => {
     setRefreshing(false);
   };
 
-  const cancelPraktik = () => {
-    {
-      pendingPraktik.map(itemPraktik => {
-        const data = {
-          status: 'DIBATALKAN',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPraktik/${itemPraktik.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('error cancel :', err);
-          });
+  const cancelPraktik = id => {
+    const data = {
+      status: 'DIBATALKAN',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPraktik/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('error cancel :', err);
       });
-    }
   };
 
-  const nextPraktik = () => {
-    {
-      pendingPraktik.map(itemPraktik => {
-        const data = {
-          status: 'PENJEMPUTAN',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPraktik/${itemPraktik.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPraktik = id => {
+    const data = {
+      status: 'PENJEMPUTAN',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPraktik/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -139,8 +131,8 @@ const Konfirmasi = () => {
               jenisHewan={itemPraktik.animal_type}
               total={itemPraktik.total}
               status={itemPraktik.status}
-              onCancel={cancelPraktik}
-              onNext={nextPraktik}
+              onCancel={() => cancelPraktik(itemPraktik.id)}
+              onNext={() => nextPraktik(itemPraktik.id)}
               textBtn="Terima"
               images={{uri: itemPraktik.praktik_photo_path}}
             />
@@ -168,28 +160,24 @@ const Penjemputan = () => {
     setRefreshing(false);
   };
 
-  const nextPraktik = () => {
-    {
-      penjemputanPraktik.map(itemPraktik => {
-        const data = {
-          status: 'DI PROSES',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPraktik/${itemPraktik.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPraktik = id => {
+    const data = {
+      status: 'DI PROSES',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPraktik/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -209,7 +197,7 @@ const Penjemputan = () => {
               jenisHewan={itemPraktik.animal_type}
               total={itemPraktik.total}
               status={itemPraktik.status}
-              onNext={nextPraktik}
+              onNext={() => nextPraktik(itemPraktik.id)}
               textBtn="Proses"
               images={{uri: itemPraktik.praktik_photo_path}}
             />
@@ -237,28 +225,24 @@ const Proses = () => {
     setRefreshing(false);
   };
 
-  const nextPraktik = () => {
-    {
-      prosesPraktik.map(itemPraktik => {
-        const data = {
-          status: 'DI ANTAR',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPraktik/${itemPraktik.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPraktik = id => {
+    const data = {
+      status: 'DI ANTAR',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPraktik/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -278,7 +262,7 @@ const Proses = () => {
               jenisHewan={itemPraktik.animal_type}
               total={itemPraktik.total}
               status={itemPraktik.status}
-              onNext={nextPraktik}
+              onNext={() => nextPraktik(itemPraktik.id)}
               textBtn="Antar"
               images={{uri: itemPraktik.praktik_photo_path}}
             />
@@ -306,28 +290,24 @@ const Antar = () => {
     setRefreshing(false);
   };
 
-  const nextPraktik = () => {
-    {
-      antarPraktik.map(itemPraktik => {
-        const data = {
-          status: 'SELESAI',
-        };
-        dispatch(setLoading(true));
-        Axios.post(`${API_HOST.url}/allPraktik/${itemPraktik.id}`, data)
-          .then(res => {
-            dispatch(setLoading(false));
-            showMessage('Sukses memperbarui status', 'success');
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'MainApp'}],
-            });
-          })
-          .catch(err => {
-            dispatch(setLoading(false));
-            console.log('sukses cancel :', err);
-          });
+  const nextPraktik = id => {
+    const data = {
+      status: 'SELESAI',
+    };
+    dispatch(setLoading(true));
+    Axios.post(`${API_HOST.url}/allPraktik/${id}`, data)
+      .then(res => {
+        dispatch(setLoading(false));
+        showMessage('Sukses memperbarui status', 'success');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainApp'}],
+        });
+      })
+      .catch(err => {
+        dispatch(setLoading(false));
+        console.log('sukses cancel :', err);
       });
-    }
   };
 
   return (
@@ -347,7 +327,7 @@ const Antar = () => {
               jenisHewan={itemPraktik.animal_type}
               total={itemPraktik.total}
               status={itemPraktik.status}
-              onNext={nextPraktik}
+              onNext={() => nextPraktik(itemPraktik.id)}
               textBtn="Selesai"
               images={{uri: itemPraktik.praktik_photo_path}}
             />
